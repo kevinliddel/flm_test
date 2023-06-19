@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-10 mx-auto mt-5">
+            <div class="card">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
+                        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"> Ajouter un baptême </h4>
+                    </div>
+                </div>
+                <div class="p-3"><br>
+                    <form action="" role="form" class="text-start" method="POST">{% csrf_token %}
+
+                        <!-- {{ form|crispy }} -->
+                        <div class="row">  
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b> Nom </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> Votre nom </label>{{ form.name }}
+                                            <span class="danger">{{ form.name.errors }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <b> Prénom </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> Votre prénom </label>{{ form.surname }}
+                                            <span class="danger">{{ form.surname.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b> Date de Naissance </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"></label>
+                                            <input type="datetime-local" class="form-control" name="birth">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <b> Lieu de Naissance </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> Née à... </label>{{ form.birthplace }}
+                                            <span class="danger">{{ form.birthplace.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b> Age </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> Votre âge </label>{{ form.age }}
+                                            <span class="danger">{{ form.age.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="row">
+                                    <b> Sexe </b>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <label class="form-label"></label>{{ form.sex }}
+                                        <span class="danger">{{ form.sex.errors }}</span>
+                                    </div>
+                                </div>
+            
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b> Date du baptême </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"></label>
+                                            <input type="datetime-local" class="form-control" name="baptism_date">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b> Nom du Père </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> Nom du Père </label>{{ form.father }}
+                                            <span class="danger">{{ form.faction.errors }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <b> Nom de la Mère </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> Nom de la Mère </label>{{ form.mother }}
+                                            <span class="danger">{{ form.faction.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+            
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b> Famille de </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> Famille de... </label>{{ form.familytree }}
+                                            <span class="danger">{{ form.familytree.errors }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <b> Tuteur ou Tutrice </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> Sous la tutelle de... </label>{{ form.responsible }}
+                                            <span class="danger">{{ form.responsible.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                            <center><div class="col-md-6">
+                                <input class="btn btn-outline-info" type="submit" value="Enregistrer les données">          
+                            </div></center>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

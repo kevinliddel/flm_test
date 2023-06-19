@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-10 mx-auto mt-5">
+            <div class="card">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
+                        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"> Ajouter une église </h4>
+                    </div>
+                </div>
+                <div class="p-3"><br>
+                    <form action="" role="form" class="text-start" method="POST">{% csrf_token %}
+
+                        <!-- {{ form|crispy }} -->
+                        <div class="row">  
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <b> Nom de l'église </b>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <label class="form-label"> Nom de l'église </label>{{ form.church_name }}
+                                        <span class="danger">{{ form.church_name.errors }}</span>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <b> Synode </b>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <label class="form-label">  </label>{{ form.church_synod }}
+                                        <span class="danger">{{ form.church_synod.errors }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <b> " Fitandremana " </b>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <label class="form-label"> Fitandremana </label>{{ form.church_branch }}
+                                        <span class="danger">{{ form.church_branch.errors }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <b> " Fileovana " </b>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <label class="form-label"> Fileovana </label>{{ form.church_tree }}
+                                        <span class="danger">{{ form.church_tree.errors }}</span>
+                                    </div>
+                                </div>    
+                            </div>
+        
+                            <div class="row">
+                                <b> Adresse </b>
+                                <div class="input-group input-group-outline mb-3">
+                                    <label class="form-label"> Quartier où l'église se situe </label>{{ form.located_at }}
+                                    <span class="danger">{{ form.located_at.errors }}</span>
+                                </div>
+                            </div>
+        
+                        </div>
+                        
+                        <center><div class="col-md-6">
+                            <input class="btn btn-outline-info" type="submit" value="Enregistrer les données">          
+                        </div></center>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

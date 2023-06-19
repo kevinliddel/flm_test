@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Delete Modal -->
+{% for sacrament in sacraments %}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <p class="p-4">
+                Etes-vous sure de vouloir supprimer cette confirmation?
+            </p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
+                <a class="btn btn-danger" href="{% url 'sacrament_delete' pk=sacrament.pk %}"> Supprimer </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Look Modal -->
+{% for sacrament in sacraments %}
+<div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<div class="container-fluid py-4">
+<div class="row">
+    <div class="col-12">
+
+    <a class="add-button" href="{% url 'add_sacrament' %}" style="transition: 0.5s; border-radius: 5px; cursor: pointer; margin-bottom: 10px; padding: 15px; background: linear-gradient(-40deg, #45cafc, #303f9f); display: inline-flex; align-items: center; text-transform: none; text-align: center; color: white"> Ajouter une confirmation </a>
+
+    <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-center text-capitalize ps-3"> Liste des confirmations effectués </h6>
+        </div>
+        </div>
+        <div class="card-body px-0 pb-2">
+        <div class="table-responsive p-0">
+            <table class="table align-items-center justify-content-center mb-0">
+            <thead>
+                <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Nom et Prénom </th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Date et lieu de naissance </th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Famille de  </th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Fils ou fille de </th>
+                <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sacrament in sacraments %}
+                <tr>
+                <td>
+                    <div class="d-flex px-2">
+                    <!-- div>
+                        <img src="#" class="avatar avatar-sm rounded-circle me-2" alt="spotify">
+                    </div -->
+                    <div class="my-auto">
+                        <h6 class="mb-0 text-sm ps-2"> {{ sacrament.name }} {{ sacrament.surname }} </h6>
+                    </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="text-xs font-weight-bold"> {{ sacrament.birth }} à {{ sacrament.birthplace }} </span>
+                </td>
+                <td>
+                    <span class="text-xs font-weight-bold"> {{ sacrament.familytree }} </span>
+                </td>
+                <td>
+                    <span class="text-xs font-weight-bold"> {{ sacrament.father }} et de {{ sacrament.mother }} </span>
+                </td>
+                </td>
+                <td class="align-middle">
+                    <button type="button" data-toggle="modal" data-target="#lookModal" class="btn btn-link text-secondary mb-0">
+                        <i class="material-icons fs-3 opacity-10">perm_contact_calendar</i>
+                    </button>
+
+                    <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-link text-secondary mb-0">
+                        <a href="{% url 'edit_sacrament' pk=sacrament.pk %}">
+                            <i class="material-icons fs-3 opacity-10">mode_edit</i>
+                        </a>
+                    </button>
+
+                    <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-link text-secondary mb-0">
+                        <i class="material-icons fs-3 opacity-10">highlight_off</i>
+                    </button>
+
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <p class="p-4">
+                                    Etes-vous sure de vouloir supprimer cette confirmation de la liste?
+                                </p>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
+                                    <a class="btn btn-danger" href="{% url 'sacrament_delete' pk=sacrament.pk %}"> Supprimer </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+
+        <div class="pagination justify-content-center p-2">
+            <span class="step-links">
+                {% if sacraments.has_previous %}
+                    <a href="?page=1">
+                        <i class="fa fa-backward px-2"></i>
+                    </a>
+                    <a href="?page={{ sacraments.previous_page_number }}">
+                        <i class="fa fa-chevron-circle-left px-2"></i>
+                    </a>
+                {% endif %}
+        
+                <span class="current">
+                    Page n° {{ sacraments.number }} sur {{ sacraments.paginator.num_pages }}
+                </span>
+        
+                {% if sacraments.has_next %}
+                    <a href="?page={{ sacraments.next_page_number }}">
+                        <i class="fa fa-chevron-circle-right px-2"></i>
+                    </a>
+                    <a href="?page={{ sacraments.paginator.num_pages }}">
+                        <i class="fa fa-forward px-2"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+
+{% endblock content %}

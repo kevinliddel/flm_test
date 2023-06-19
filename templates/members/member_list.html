@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Delete Modal -->
+{% for member in members %}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <p class="p-4">
+                Etes-vous sure de vouloir supprimer ce membre de l'église?
+            </p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
+                <a class="btn btn-danger" href="{% url 'member_delete' pk=member.pk %}"> Supprimer </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Look Modal -->
+{% for member in members %}
+<div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<div class="container-fluid py-4">
+<div class="row">
+    <div class="col-12">
+
+    <a class="add-button" href="{% url 'add_member' %}" style="transition: 0.5s; border-radius: 5px; cursor: pointer; margin-bottom: 10px; padding: 15px; background: linear-gradient(-40deg, #45cafc, #303f9f); display: inline-flex; align-items: center; text-transform: none; text-align: center; color: white"> Ajouter un membre </a>
+
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+                <h6 class="text-white text-center text-capitalize ps-3"> Liste des Membres de l'église </h6>
+            </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+                <table class="table align-items-center justify-content-center mb-0">
+                <thead>
+                    <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Nom et Prénom </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Date et lieu de naissance </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Eglise </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Famille de </th>
+                    <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                    <tr>
+                    <td>
+                        <div class="d-flex px-2">
+                        <!-- div>
+                            <img src="#" class="avatar avatar-sm rounded-circle me-2" alt="spotify">
+                        </div -->
+                        <div class="my-auto">
+                            <h6 class="mb-0 text-sm ps-2"> {{ member.name }} {{ member.surname }} </h6>
+                        </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="text-xs font-weight-bold"> {{ member.birth }} à {{ member.birthplace }} </span>
+                    </td>
+                    <td>
+                        <span class="text-xs font-weight-bold"> {{ member.faction }} </span>
+                    </td>
+                    <td>
+                        <span class="text-xs font-weight-bold"> {{ member.familytree }} </span>
+                    </td>
+                    </td>
+                    <td class="align-middle">
+                        <button type="button" data-toggle="modal" data-target="#lookModal" class="btn btn-link text-secondary mb-0">
+                            <i class="material-icons fs-3 opacity-10">perm_contact_calendar</i>
+                        </button>
+
+                        <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-link text-secondary mb-0">
+                            <a href="{% url 'edit_member' pk=member.pk %}">
+                                <i class="material-icons fs-3 opacity-10">mode_edit</i>
+                            </a>
+                        </button>
+
+                        <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-link text-secondary mb-0">
+                            <i class="material-icons fs-3 opacity-10">highlight_off</i>
+                        </button>
+
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <p class="p-4">
+                                        Etes-vous sure de vouloir supprimer ce membre de l'église?
+                                    </p>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
+                                        <a class="btn btn-danger" href="{% url 'member_delete' pk=member.pk %}"> Supprimer </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+
+            <div class="pagination justify-content-center p-2">
+                <span class="step-links">
+                    {% if members.has_previous %}
+                        <a href="?page=1">
+                            <i class="fa fa-backward px-2"></i>
+                        </a>
+                        <a href="?page={{ members.previous_page_number }}">
+                            <i class="fa fa-chevron-circle-left px-2"></i>
+                        </a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page n° {{ members.number }} sur {{ members.paginator.num_pages }}
+                    </span>
+            
+                    {% if members.has_next %}
+                        <a href="?page={{ members.next_page_number }}">
+                            <i class="fa fa-chevron-circle-right px-2"></i>
+                        </a>
+                        <a href="?page={{ members.paginator.num_pages }}">
+                            <i class="fa fa-forward px-2"></i>
+                        </a>
+                    {% endif %}
+                </span>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock content %}

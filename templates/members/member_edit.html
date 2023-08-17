@@ -20,119 +20,143 @@
                     <form action="" role="form" class="text-start" method="POST">{% csrf_token %}
 
                         <!-- {{ form|crispy }} -->
-                    <div class="row">  
-                        <div class="col-md-6">
-                            <div class="row">
-                                <b> Nom </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label">  </label>{{ form.name }}
-                                    <span class="danger">{{ form.name.errors }}</span>
-                                </div>
-                                <b> Prénom </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label">  </label>{{ form.surname }}
-                                    <span class="danger">{{ form.surname.errors }}</span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <b> Date de Naissance </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label"></label>
-                                    <input type="datetime-local" class="form-control" name="birth">
-                                </div>
-                                <b> Lieu de Naissance </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label">  </label>{{ form.birthplace }}
-                                    <span class="danger">{{ form.birthplace.errors }}</span>
-                                </div>
-                                <b> Age </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label">  </label>{{ form.age }}
-                                    <span class="danger">{{ form.age.errors }}</span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <b> Sexe </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label"></label>{{ form.sex }}
-                                    <span class="danger">{{ form.sex.errors }}</span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <b> Métier ou Occupation </b>
-                                    <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">  </label>{{ form.job }}
-                                        <span class="danger">{{ form.job.errors }}</span>
+                        <div class="row">  
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b> Nom </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> </label>{{ form.name }}
+                                            <span class="danger">{{ form.name.errors }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <b> Prénom </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> </label>{{ form.surname }}
+                                            <span class="danger">{{ form.surname.errors }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <b> Diplôme </b>
+            
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b> Date de Naissance </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"></label>{{ form.birth }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <b> Lieu de Naissance </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> </label>{{ form.birthplace }}
+                                            <span class="danger">{{ form.birthplace.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b> Age </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> </label>{{ form.age }}
+                                            <span class="danger">{{ form.age.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="row">
+                                    <b> Sexe </b>
                                     <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">  </label>{{ form.diploma }}
-                                        <span class="danger">{{ form.diploma.errors }}</span>
+                                        <label class="form-label"></label>{{ form.sex }}
+                                        <span class="danger">{{ form.sex.errors }}</span>
+                                    </div>
+                                </div>
+            
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b> Métier ou Occupation </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> </label>{{ form.job }}
+                                            <span class="danger">{{ form.job.errors }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <b> Diplôme </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> </label>{{ form.diploma }}
+                                            <span class="danger">{{ form.diploma.errors }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b> Date du baptême </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"></label>{{ form.baptism }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <b> Date de la Confirmation </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"></label>{{ form.sacrament }}
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b> " Zanak' Ampielezana " </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> </label>{{ form.faction }}
+                                            <span class="danger">{{ form.faction.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="row">
+                                    <b> Situation </b>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <label class="form-label"></label>{{ form.situation }}
+                                        <span class="danger">{{ form.situation.errors }}</span>
+                                    </div>
+                                </div>
+            
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b> Date de fiançaille </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"></label>{{ form.engagement }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <b> Date de marriage </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"></label>{{ form.marriage }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b> Famille de </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"> </label>{{ form.familytree }}
+                                            <span class="danger">{{ form.familytree.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                            <center><div class="col-md-6">
+                                <input class="btn btn-outline-info" type="submit" value="Mettre à jour les données">          
+                            </div></center>
+
                         </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <b>  Date du baptême  </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label"></label>
-                                    <input type="datetime-local" class="form-control" name="baptism">
-                                </div>
-                                <b> Date de la Confirmation </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label"></label>
-                                    <input type="datetime-local" class="form-control" name="sacrament">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <b> " Zanak'Ampielezana " </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label">  </label>{{ form.faction }}
-                                    <span class="danger">{{ form.faction.errors }}</span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <b>  Situation  </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label"></label>{{ form.situation }}
-                                    <span class="danger">{{ form.situation.errors }}</span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <b> Date de fiançaille </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label"></label>
-                                    <input type="datetime-local" class="form-control" name="engagement">
-                                </div>
-                                <b> Date de marriage </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label"></label>
-                                    <input type="datetime-local" class="form-control" name="marriage">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <b> Fammille de </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label">  </label>{{ form.familytree }}
-                                    <span class="danger">{{ form.familytree.errors }}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <input class="btn btn-outline-info" type="submit" value="Mettre à jour les données">
-                        
-                    </div>
 
                     </form>
                 </div>

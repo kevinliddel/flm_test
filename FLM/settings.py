@@ -14,8 +14,10 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR =Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -25,10 +27,15 @@ SECRET_KEY = 'django-insecure-t4kq3#yze79c00k&gf=kk38&3z+31afz00i0#t_#(u4ebcwy_f
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['Dedicatus.pythonanywhere.com']
 
 
+# change the default user models to our custom model
+AUTH_USER_MODEL = 'accounts.User' 
+ 
 # Application definition
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -45,6 +52,9 @@ THIRD_PARTY_APPS = [
     'crispy_bootstrap5',
     'rest_framework',
     'import_export',
+    'channels',
+#    'dal',
+#    'dal_select2'
 ]
 
 # Custom apps
@@ -56,12 +66,15 @@ PROJECT_APPS = [
     'churchs.apps.ChurchsConfig',
     'baptisms.apps.BaptismsConfig',
     'sacraments.apps.SacramentsConfig',
+    'search.apps.SearchConfig',
+    'accounts.apps.AccountsConfig'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -107,8 +120,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'flm',
         'USER': 'root',
+        'PASSWORD': '',
         'HOST':'localhost',
         'PORT':'3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1",
+            'charset': 'utf8mb4',
+            "autocommit": True,
+        }
     }
 }
 
@@ -128,6 +147,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 
@@ -152,6 +175,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -159,9 +188,21 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirection after login & logout
+# LOGIN_URL = 'accounts/login/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/login'
+LOGOUT_REDIRECT_URL = '/'
 
 # crispy config
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+# DRF setup
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
+    ]
+}

@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">people</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Membres</h4>
+              <h4 class="mb-0"> 
+                {{ members_count }} 
+              </h4>             
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+              Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'members' %}">membres</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">membres baptisés</h4>
+              <h4 class="mb-0">
+                {{ baptisms_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'baptisms' %}">baptêmes</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">fingerprint</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Confirmations</h4>
+              <h4 class="mb-0">
+                {{ sacraments_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'sacraments' %}">confirmations</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">wc</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Total des employés</h4>
+              <h4 class="mb-0">
+                {{ employees_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'ministries' %}">employés</a>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <div class="row mt-5">
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">location_city</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Nombre d'églises</h4>
+              <h4 class="mb-0">
+                {{ churchs_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'churchs' %}">Eglises</a>
+          </div>
+        </div>
+      </div>        
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">style</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Nombre d'écoles</h4>
+              <h4 class="mb-0"> 
+                {{ schools_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'churchs' %}">Ecôles</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">wc</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Nombre d'hôpitaux</h4>
+              <h4 class="mb-0">
+                {{ hospitals_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'churchs' %}">Hôpitaux</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">wc</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Nombre de centres</h4>
+              <h4 class="mb-0">
+                {{ centers_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'churchs' %}">Centres</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">assignment_ind</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Pasteur</h4>
+              <h4 class="mb-0">
+                {{ pastor_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'ministries' %}">Pasteurs</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">group</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Catéchiste</h4>
+              <h4 class="mb-0">
+                {{ catechists_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'ministries' %}">Catéchistes</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">face</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Diacre (Diakona)</h4>
+              <h4 class="mb-0">
+                {{ deacon_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'ministries' %}">Diacres</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">face</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Evangeliste</h4>
+              <h4 class="mb-0">
+                {{ evangelists_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'ministries' %}">Evangelistes</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">assignment_ind</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Théologien</h4>
+              <h4 class="mb-0">
+                {{ theologians_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'ministries' %}">Théologiens</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">group</i>
+            </div>
+            <div class="text-end pt-1">
+              <h4 class="mb-0 text-capitalize">Berger (Mpiandry)</h4>
+              <h4 class="mb-0">
+                {{ servants_count }}
+              </h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            Voir la liste des <a class="text-success font-weight-bold" style="text-decoration: none" href="{% url 'ministries' %}">Bergers</a>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock content %}

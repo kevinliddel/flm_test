@@ -1,0 +1,224 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/logo.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    
+    <title>
+        {% block title %} {{title}} {% endblock title %}
+    </title>
+
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+
+    <!-- Nucleo Icons -->
+    <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{% static 'css/material-dashboard.css' %}" rel="stylesheet" />
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Nepcha Analytics (nepcha.com) -->
+    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+    <!--    script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script -->
+</head>
+
+<body class="g-sidenav-show  bg-gray-200">
+    <style>
+        .active-bg-info {
+            background: linear-gradient(-40deg, #45cafc, #303f9f);
+        }
+
+        .add-button{
+            transition: 0.5s; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-bottom: 10px; 
+            padding: 15px; 
+            background: linear-gradient(-40deg, #45cafc, #303f9f); 
+            display: inline-flex; 
+            align-items: center; 
+            text-transform: none; 
+            text-align: center; 
+            color: white
+        }
+
+        .add-button:hover{
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+    <!-- Main Container -->
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg px-5">
+
+        <!-- Navbar -->
+        {% include 'navbar.html' %}
+
+        <!-- Content -->
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+
+                    <center><div class="card col-9 my-4">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                            <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+                                <h6 class="text-white text-center text-capitalize ps-3"> Test </h6>
+                            </div>
+                        </div>
+                        <div class="card-body px-0 pb-2">
+                            <form id="location-form">
+                                <select style="height: 40px; width: 200px; border-radius: .3rem" id="country-select" name="country">
+                                    <option value="" disabled selected> Choisissez une région </option>
+                                    {% for country in countries %}
+                                        <option value="{{ country }}">{{ country }}</option>
+                                    {% endfor %}
+                                </select>
+                            
+                                <select style="height: 40px; width: 200px; border-radius: .3rem" id="district-select" name="district" disabled>
+                                    <option value="" disabled selected> Choisissez un district </option>
+                                </select>
+                            
+                                <select style="height: 40px; width: 200px; border-radius: .3rem" id="neighborhood-select" name="neighborhood" disabled>
+                                    <option value="" disabled selected> Choisissez une commune </option>
+                                </select>
+                            
+                                <select style="height: 40px; width: 200px; border-radius: .3rem" id="street-select" name="street" disabled>
+                                    <option value="" disabled selected> Choisissez un quartier </option>
+                                </select>
+                            </form>
+                        </div>
+                    </div></center>
+                </div>
+            </div>
+        </div>   
+
+        <!-- Navbar -->
+        {% include 'footer.html' %}
+
+    </main>
+
+    <!--   Core JS Files   -->
+    <script src="{% static 'js/core/popper.min.js' %}"></script>
+    <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{% static 'js/material-dashboard.min.js' %}"></script>
+
+      
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#country-select').change(function () {
+      var countryName = $(this).val();
+      if (countryName) {
+        $('#district-select').prop('disabled', false).empty();
+        $('#neighborhood-select').prop('disabled', true).empty();
+        $('#street-select').prop('disabled', true).empty();
+        $.ajax({
+          url: '{% url "get_districts" %}',
+          data: { 'country_name': countryName },
+          dataType: 'json',
+          success: function (data) {
+            $.each(data, function (index, district) {
+              $('#district-select').append($('<option>', {
+                value: district.district,
+                text: district.district
+              }));
+            });
+          }
+        });
+      } else {
+        $('#district-select').prop('disabled', true).empty();
+        $('#neighborhood-select').prop('disabled', true).empty();
+        $('#street-select').prop('disabled', true).empty();
+      }
+    });
+
+    $('#district-select').change(function () {
+      var districtName = $(this).val();
+      if (districtName) {
+        $('#neighborhood-select').prop('disabled', false).empty();
+        $('#street-select').prop('disabled', true).empty();
+        $.ajax({
+          url: '{% url "get_neighborhoods" %}',
+          data: { 'district_name': districtName },
+          dataType: 'json',
+          success: function (data) {
+            $.each(data, function (index, neighborhood) {
+              $('#neighborhood-select').append($('<option>', {
+                value: neighborhood.neighborhood,
+                text: neighborhood.neighborhood
+              }));
+            });
+          }
+        });
+      } else {
+        $('#neighborhood-select').prop('disabled', true).empty();
+        $('#street-select').prop('disabled', true).empty();
+      }
+    });
+
+    $('#neighborhood-select').change(function () {
+      var neighborhoodName = $(this).val();
+      if (neighborhoodName) {
+        $('#street-select').prop('disabled', false).empty();
+        $.ajax({
+          url: '{% url "get_streets" %}',
+          data: { 'neighborhood_name': neighborhoodName },
+          dataType: 'json',
+          success: function (data) {
+            $.each(data, function (index, street) {
+              $('#street-select').append($('<option>', {
+                value: street.street,
+                text: street.street
+              }));
+            });
+          }
+        });
+      } else {
+        $('#street-select').prop('disabled', true).empty();
+      }
+    });
+  });
+</script>
+{% endblock js %}
+
+</body>
+
+</html>

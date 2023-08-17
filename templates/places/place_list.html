@@ -1,96 +1,197 @@
-{% extends 'base.html' %}
-
-{% block title %} {{title}} {% endblock title %}
-
 {% load static %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="container-fluid py-4">
-<div class="row">
-    <div class="col-12">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <a class="add-button" href="{% url 'place' %}" style="transition: 0.5s; border-radius: 5px; cursor: pointer; margin-bottom: 10px; padding: 15px; background: linear-gradient(-40deg, #45cafc, #303f9f); display: inline-flex; align-items: center; text-transform: none; text-align: center; color: white"> Importer les données concernant la localité </a>
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/logo.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    
+    <title>
+        {% block title %} {{title}} {% endblock title %}
+    </title>
 
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
 
-        <div class="card my-4">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
-                <h6 class="text-white text-center text-capitalize ps-3"> Liste des localités </h6>
-            </div>
-            </div>
-            <div class="card-body px-0 pb-2">
-            <div class="table-responsive p-0">
-                <table class="table align-items-center justify-content-center mb-0">
-                <thead>
-                    <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Région </th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> District </th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Commune </th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Quartier </th>
-                    <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for place in places %}
-                    <tr>
-                    <td>
-                        <div class="d-flex px-2">
-                        <div class="my-auto">
-                            <h6 class="mb-0 text-sm ps-2"> {{ place.country }} </h6>
+    <!-- Nucleo Icons -->
+    <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{% static 'css/material-dashboard.css' %}" rel="stylesheet" />
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Nepcha Analytics (nepcha.com) -->
+    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+    <!--    script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script -->
+</head>
+
+<body class="g-sidenav-show  bg-gray-200">
+    <style>
+        .active-bg-info {
+            background: linear-gradient(-40deg, #45cafc, #303f9f);
+        }
+
+        .add-button{
+            transition: 0.5s; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-bottom: 10px; 
+            padding: 15px; 
+            background: linear-gradient(-40deg, #45cafc, #303f9f); 
+            display: inline-flex; 
+            align-items: center; 
+            text-transform: none; 
+            text-align: center; 
+            color: white
+        }
+
+        .add-button:hover{
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+    <!-- Main Container -->
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg px-5">
+
+        <!-- Navbar -->
+        {% include 'navbar.html' %}
+
+        <!-- Content -->
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+            
+                    <a class="add-button" href="{% url 'place' %}"> Importer les données concernant la localité </a>
+                    <!-- a class="add-button" href="{% url 'dependant_list' %}"> Test </a -->
+            
+                    <div class="card my-4">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-center text-capitalize ps-3"> Liste des localités </h6>
                         </div>
                         </div>
-                    </td>
-                    <td>
-                        <span class="text-xs font-weight-bold"> {{ place.district }} </span>
-                    </td>
-                    <td>
-                        <span class="text-xs font-weight-bold"> {{ place.neighborhood }} </span>
-                    </td>
-                    <td>
-                        <span class="text-xs font-weight-bold"> {{ place.street }} </span>
-                    </td>
-                    </td>
-                    <td class="align-middle">
-
-                    </td>
-                    </tr>
-                    
-                </tbody>
-                {% endfor %}
-                </table>
-            </div>
-
-            <div class="pagination justify-content-center p-2">
-                <span class="step-links">
-                    {% if places.has_previous %}
-                        <a href="?page=1">
-                            <i class="fa fa-backward px-2"></i>
-                        </a>
-                        <a href="?page={{ places.previous_page_number }}">
-                            <i class="fa fa-chevron-circle-left px-2"></i>
-                        </a>
-                    {% endif %}
+                        <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center justify-content-center mb-0">
+                            <thead>
+                                <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Région </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> District </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Commune </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Quartier </th>
+                                <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for place in places %}
+                                <tr>
+                                <td>
+                                    <div class="d-flex px-2">
+                                    <div class="my-auto">
+                                        <h6 class="mb-0 text-sm ps-2"> {{ place.country }} </h6>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold"> {{ place.district }} </span>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold"> {{ place.neighborhood }} </span>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold"> {{ place.street }} </span>
+                                </td>
+                                </td>
+                                <td class="align-middle">
             
-                    <span class="current">
-                        Page n° {{ places.number }} sur {{ places.paginator.num_pages }}
-                    </span>
+                                </td>
+                                </tr>
+                                
+                            </tbody>
+                            {% endfor %}
+                            </table>
+                        </div>
             
-                    {% if places.has_next %}
-                        <a href="?page={{ places.next_page_number }}">
-                            <i class="fa fa-chevron-circle-right px-2"></i>
-                        </a>
-                        <a href="?page={{ places.paginator.num_pages }}">
-                            <i class="fa fa-forward px-2"></i>
-                        </a>
-                    {% endif %}
-                </span>
+                        <div class="pagination justify-content-center p-2">
+                            <span class="step-links">
+                                {% if places.has_previous %}
+                                    <a href="?page=1">
+                                        <i class="fa fa-backward px-2"></i>
+                                    </a>
+                                    <a href="?page={{ places.previous_page_number }}">
+                                        <i class="fa fa-chevron-circle-left px-2"></i>
+                                    </a>
+                                {% endif %}
+                        
+                                <span class="current">
+                                    Page n° {{ places.number }} sur {{ places.paginator.num_pages }}
+                                </span>
+                        
+                                {% if places.has_next %}
+                                    <a href="?page={{ places.next_page_number }}">
+                                        <i class="fa fa-chevron-circle-right px-2"></i>
+                                    </a>
+                                    <a href="?page={{ places.paginator.num_pages }}">
+                                        <i class="fa fa-forward px-2"></i>
+                                    </a>
+                                {% endif %}
+                            </span>
+                        </div>
+            
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
 
-            </div>
-        </div>
-    </div>
-</div>
-</div>
+        <!-- Navbar -->
+        {% include 'footer.html' %}
 
-{% endblock content %}
+    </main>
+
+    <!--   Core JS Files   -->
+    <script src="{% static 'js/core/popper.min.js' %}"></script>
+    <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{% static 'js/material-dashboard.min.js' %}"></script>
+
+    {% block js %}
+    {% endblock js %}
+
+</body>
+
+</html>

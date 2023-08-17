@@ -9,3 +9,5 @@ class PlacesForm(forms.Form):
     class meta:
         model = Places
         fields = '__all__'
+        
+    

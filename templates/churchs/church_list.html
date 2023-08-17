@@ -6,47 +6,31 @@
 
 {% block content %}
 
-<!-- Delete Modal -->
-{% for church in churchs %}
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <p class="p-4">
-                Etes-vous sure de vouloir supprimer cette église?
-            </p>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
-                <a class="btn btn-danger" href="{% url 'church_delete' pk=church.pk %}"> Supprimer </a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
-
-<!-- Look Modal -->
-{% for church in churchs %}
-<div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
-
 <div class="container-fluid py-4">
 <div class="row">
     <div class="col-12">
 
-    <a class="add-button" href="{% url 'add_church' %}" style="transition: 0.5s; border-radius: 5px; cursor: pointer; margin-bottom: 10px; padding: 15px; background: linear-gradient(-40deg, #45cafc, #303f9f); display: inline-flex; align-items: center; text-transform: none; text-align: center; color: white"> Ajouter une église </a>
+        <div class="row">
+            <div class="col-sm-9">
+                <a class="add-button" href="{% url 'add_church' %}"> Ajouter un établissement </a>
+            </div>
+            <div class="col-sm-3">
+                <form class="d-flex" action="" method="GET">{% csrf_token %}
+                    <i class="material-icons mr-2 mt-2 opacity-10">filter_list</i> <span class="mx-2 mt-2"> Filtrer </span>
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">Filtrer...</label>
+                        <input type="text" class="form-control" name="church_filter" value="{{ request.GET.church_filter }}">
+                    </div>
+                    <button class="btn btn-light d-none" type="submit">
+                    </button>
+                </form>
+            </div>
+        </div>
 
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
-                <h6 class="text-white text-center text-capitalize ps-3"> Liste des Eglises </h6>
+                <h6 class="text-white text-center text-capitalize ps-3"> Liste des Etablissements </h6>
             </div>
             </div>
             <div class="card-body px-0 pb-2">
@@ -54,7 +38,8 @@
                 <table class="table align-items-center justify-content-center mb-0">
                 <thead>
                     <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Nom de l'église </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Nom de l'établissement </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Type de l'établissement </th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> "Fitandremana" </th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> "Fileovana" </th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Synode </th>
@@ -76,6 +61,9 @@
                         </div>
                     </td>
                     <td>
+                        <span class="text-xs font-weight-bold"> {{ church.type_of }} </span>
+                    </td>
+                    <td>
                         <span class="text-xs font-weight-bold"> {{ church.church_branch }} </span>
                     </td>
                     <td>
@@ -88,7 +76,11 @@
                         <span class="text-xs font-weight-bold"> {{ church.located_at }} </span>
                     </td>
                     <td class="align-middle">
-                        <button type="button" data-toggle="modal" data-target="#lookModal" class="btn btn-link text-secondary mb-0">
+                        <button type="button" class="btn btn-link text-secondary mb-0" data-toggle="modal" data-target="#lookModal"
+                            data-church-name="{{ church.church_name }}" data-type-of="{{ church.type_of }}"
+                            data-church-branch="{{ church.church_branch }}" data-church-tree="{{ church.church_tree }}"
+                            data-church-synod="{{ church.church_synod }}" data-located-at="{{ church.located_at }}"
+                        >
                             <i class="material-icons fs-3 opacity-10">perm_contact_calendar</i>
                         </button>
 
@@ -98,27 +90,46 @@
                             </a>
                         </button>
 
-                        <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-link text-secondary mb-0">
+                        <button type="button" class="btn btn-link text-secondary mb-0" data-toggle="modal" data-target="#deleteModal"
+                            data-church-id="{{ church.pk }}" data-church-name="{{ church.church_name}}"
+                        >
                             <i class="material-icons fs-3 opacity-10">highlight_off</i>
                         </button>
 
-                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <p class="p-4">
-                                        Etes-vous sure de vouloir supprimer cette église?
-                                    </p>
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Êtes-vous sûr de vouloir supprimer l'établissement <span id="modal-church-name"></span> ?</p>
+                                    </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
-                                        <a class="btn btn-danger" href="{% url 'church_delete' pk=church.pk %}"> Supprimer </a>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                        <button type="button" class="btn btn-danger" onclick="deleteChurch()">Supprimer</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="lookModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content">
+                                <div class="modal-content p-3">
+                                    <div class="modal-header">
+                                        <i class="material-icons opacity-10" style="font-size: 50px">location_city</i>
+                                    </div>
+
+                                    <br>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Nom de l'établissement: </b> <span id="modal-data-church-name"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Type de l'établissement: </b>  <span id="modal-data-type-of"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> "Fitandremana": </b> <span id="modal-data-church-branch"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> "Fileovana": </b> <span id="modal-data-church-tree"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Synode: </b> <span id="modal-data-church-synod"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Adresse: </b> <span id="modal-data-located-at"></span> </p>
                                     
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
@@ -126,6 +137,7 @@
                                 </div>
                             </div>
                         </div>
+    
 
                     </td>
                     </tr>
@@ -167,3 +179,48 @@
 </div>
 
 {% endblock content %}
+
+{% block js %}
+<script>
+    $(document).ready(function() {
+        $('#lookModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var modal = $(this);
+            
+            modal.find('#modal-data-church-name').text(button.data('church-name'));
+            modal.find('#modal-data-type-of').text(button.data('type-of'));
+            modal.find('#modal-data-church-branch').text(button.data('church-branch'));
+            modal.find('#modal-data-church-tree').text(button.data('church-tree'));
+            modal.find('#modal-data-church-synod').text(button.data('church-synod'));
+            modal.find('#modal-data-located-at').text(button.data('located-at'));
+        });
+    });
+
+    $(document).ready(function() {
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var modal = $(this);
+    
+            var churchId = button.data('church-id');
+            var churchName = button.data('church-name');
+    
+            modal.find('#modal-church-name').text(churchName);
+            modal.find('.btn-danger').attr('data-church-id', churchId);
+        });
+    });
+    
+    function deleteChurch() {
+        var churchId = $('.btn-danger').data('church-id');
+        var form = $('<form>', {
+            'method': 'POST',
+            'action': '{% url "church_delete" pk=0 %}'.replace('0', churchId),
+        }).append($('<input>', {
+            'type': 'hidden',
+            'name': 'csrfmiddlewaretoken',
+            'value': '{{ csrf_token }}'
+        })).appendTo('body');
+        form.submit();
+    }
+    
+</script>
+{% endblock js %}

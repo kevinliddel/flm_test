@@ -1,0 +1,310 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/logo.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    
+    <title>
+        {% block title %} {{title}} {% endblock title %}
+    </title>
+
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+
+    <!-- Nucleo Icons -->
+    <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{% static 'css/material-dashboard.css' %}" rel="stylesheet" />
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Nepcha Analytics (nepcha.com) -->
+    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+    <!--    script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script -->
+</head>
+
+<body class="g-sidenav-show  bg-gray-200">
+    <style>
+        .active-bg-info {
+            background: linear-gradient(-40deg, #45cafc, #303f9f);
+        }
+
+        .add-button{
+            transition: 0.5s; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-bottom: 10px; 
+            padding: 15px; 
+            background: linear-gradient(-40deg, #45cafc, #303f9f); 
+            display: inline-flex; 
+            align-items: center; 
+            text-transform: none; 
+            text-align: center; 
+            color: white
+        }
+
+        .add-button:hover{
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+    <!-- Main Container -->
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg px-5">
+
+        <!-- Navbar -->
+        {% include 'navbar.html' %}
+
+        <!-- Content -->
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+            
+                    <div class="row">
+                        <div class="col-sm-9">
+                        {% if request.user.is_superuser %}
+                            <a class="add-button" href="{% url 'add' %}"> Ajouter un utilisateur </a>
+                        {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="card my-4">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-center text-capitalize ps-3"> Liste des utilisateurs </h6>
+                        </div>
+                        </div>
+                        <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center justify-content-center mb-0">
+                            <thead>
+                                <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">  </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Nom et prénom </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Email </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Téléphone </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Adresse </th>
+                                <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for custom in object_list %}
+                                <tr>
+                                <td>
+                                    <img src="{{ custom.custom.picture.url }}" style="width: 50px; border-radius: 50%">
+                                </td>
+                                <td>
+                                    <div class="d-flex px-2">
+                                        <div class="my-auto">
+                                            <h6 class="mb-0 text-sm ps-2"> {{ custom.custom.get_full_name }} </h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold"> {{ custom.custom.email }} </span>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold"> {{ custom.custom.phone }} </span>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold"> {{ custom.custom.address }} </span>
+                                </td>
+                                </td>
+                                <td class="align-middle">
+
+                                    <button type="button" class="btn btn-link text-secondary mb-0" data-toggle="modal" data-target="#lookModal"
+                                        data-firstname="{{ custom.custom.first_name }}" data-lastname="{{ custom.custom.last_name }}"
+                                        data-address="{{ custom.custom.address }}" data-phone="{{ custom.custom.phone }}"
+                                        data-email="{{ custom.custom.email }}"
+                                    >
+                                        <i class="material-icons fs-3 opacity-10">perm_contact_calendar</i>
+                                    </button>
+            
+                                    {% if request.user.is_superuser %}
+                                        <button type="button" class="btn btn-link text-secondary mb-0">
+                                            <a href="{% url 'edit' pk=custom.custom.pk %}">
+                                                <i class="material-icons fs-3 opacity-10">mode_edit</i>
+                                            </a>
+                                        </button>
+
+                                        <button type="button" class="btn btn-link text-secondary mb-0" data-toggle="modal" data-target="#deleteModal"
+                                            data-custom-id="{{ custom.custom.pk }}" data-custom-name="{{ custom.custom.first_name }} {{ custom.custom.last_name }}"
+                                        >
+                                            <i class="material-icons fs-3 opacity-10">highlight_off</i>
+                                        </button>
+                                    {% endif %}
+
+                                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Êtes-vous sûr de vouloir supprimer l'utilisateur <span id="modal-custom-name"></span> ?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                                    <button type="button" class="btn btn-danger" onclick="deleteCustom()">Supprimer</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                
+                                    <div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="lookModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content p-3">
+                                                <div class="modal-header">
+                                                    <i class="material-icons opacity-10" style="font-size: 50px">face</i>
+                                                </div>
+                                    
+                                                <br>
+                                                <p class="p-auto"> <b style="color: #009FF0"> Nom et prénom: </b> <span id="modal-data-firstname"></span> <span id="modal-data-lastname"></span> </p>
+                                                <p class="p-auto"> <b style="color: #009FF0"> Adresse: </b> <span id="modal-data-address"></span> </p>
+                                                <p class="p-auto"> <b style="color: #009FF0"> N° téléphone: </b> <span id="modal-data-phone"></span> </p>
+                                                <p class="p-auto"> <b style="color: #009FF0"> Adresse email: </b> <span id="modal-data-email"></span> </p>
+                                    
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                </tr>
+                                
+                            </tbody>
+                            {% endfor %}
+                            </table>
+                        </div>
+            
+                        <div class="pagination justify-content-center p-2">
+                            <span class="step-links">
+                                {% if custom.has_previous %}
+                                    <a href="?page=1">
+                                        <i class="fa fa-backward px-2"></i>
+                                    </a>
+                                    <a href="?page={{ custom.previous_page_number }}">
+                                        <i class="fa fa-chevron-circle-left px-2"></i>
+                                    </a>
+                                {% endif %}
+                        
+                                <span class="current">
+                                    Page n° {{ custom.number }} sur {{ custom.paginator.num_pages }}
+                                </span>
+                        
+                                {% if custom.has_next %}
+                                    <a href="?page={{ custom.next_page_number }}">
+                                        <i class="fa fa-chevron-circle-right px-2"></i>
+                                    </a>
+                                    <a href="?page={{ custom.paginator.num_pages }}">
+                                        <i class="fa fa-forward px-2"></i>
+                                    </a>
+                                {% endif %}
+                            </span>
+                        </div>
+            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navbar -->
+        {% include 'footer.html' %}
+
+    </main>
+
+    <!--   Core JS Files   -->
+    <script src="{% static 'js/core/popper.min.js' %}"></script>
+    <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{% static 'js/material-dashboard.min.js' %}"></script>
+
+    {% block js %}
+    <script>
+        $(document).ready(function() {
+            $('#lookModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var modal = $(this);
+                
+                modal.find('#modal-data-firstname').text(button.data('firstname'));
+                modal.find('#modal-data-lastname').text(button.data('lastname'));
+                modal.find('#modal-data-address').text(button.data('address'));
+                modal.find('#modal-data-phone').text(button.data('phone'));
+                modal.find('#modal-data-email').text(button.data('email'));
+            });
+        });
+
+        $(document).ready(function() {
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var modal = $(this);
+        
+                var customId = button.data('custom-id');
+                var customName = button.data('custom-name');
+        
+                modal.find('#modal-custom-name').text(customName);
+                modal.find('.btn-danger').attr('data-custom-id', customId);
+            });
+        });
+        
+        function deleteCustom() {
+            var customId = $('.btn-danger').data('custom-id');
+            var form = $('<form>', {
+                'method': 'POST',
+                'action': '{% url "delete" pk=0 %}'.replace('0', customId),
+            }).append($('<input>', {
+                'type': 'hidden',
+                'name': 'csrfmiddlewaretoken',
+                'value': '{{ csrf_token }}'
+            })).appendTo('body');
+            form.submit();
+        }
+        
+    </script>
+    {% endblock js %}
+
+</body>
+
+</html>

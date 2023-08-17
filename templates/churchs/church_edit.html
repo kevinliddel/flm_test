@@ -14,32 +14,32 @@
             <div class="card">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
-                        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"> Modifier cette église </h4>
+                        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"> Modifier cette établissement </h4>
                     </div>
                 </div>
                 <div class="p-3"><br>
-                    <form action="" role="form" class="text-start" method="POST">{% csrf_token %}
+                    <form action="" role="form" class="text-start" id="location-form" method="POST">{% csrf_token %}
 
                         <!-- {{ form|crispy }} -->
                         <div class="row">  
                             <div class="row">
-                                <div class="col-md-12">
-                                    <b> Nom de l'église </b>
+                                <div class="col-md-6">
+                                    <b> Nom de l'établissement </b>
                                     <div class="input-group input-group-outline mb-3">
                                         <label class="form-label">  </label>{{ form.church_name }}
                                         <span class="danger">{{ form.church_name.errors }}</span>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <b> Type d'établissement </b>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <label class="form-label">  </label>{{ form.type_of }}
+                                        <span class="danger">{{ form.type_of.errors }}</span>
+                                    </div>
+                                </div>
                             </div>
         
                             <div class="row">
-                                <div class="col-md-4">
-                                    <b> Synode </b>
-                                    <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">  </label>{{ form.church_synod }}
-                                        <span class="danger">{{ form.church_synod.errors }}</span>
-                                    </div>
-                                </div>
                                 <div class="col-md-4">
                                     <b> " Fitandremana " </b>
                                     <div class="input-group input-group-outline mb-3">
@@ -54,13 +54,52 @@
                                         <span class="danger">{{ form.church_tree.errors }}</span>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <b> Synode </b>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <label class="form-label">  </label>{{ form.church_synod }}
+                                        <span class="danger">{{ form.church_synod.errors }}</span>
+                                    </div>
+                                </div>
                             </div>
+
+                            <!-- b> Localité </b>
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <select style="height: 40px; width: 100%; border-radius: .3rem" id="country-select">
+                                        <option value="" disabled selected> Choisissez une région </option>
+                                        {% for country in form.fields.country.choices %}
+                                            <option value="{{ country.0 }}">{{ country.1 }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-3 mb-3">
+                                    <select style="height: 40px; width: 100%; border-radius: .3rem" id="district-select" disabled>
+                                        <option value="" disabled selected> Choisissez un district </option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-3 mb-3">
+                                    <select style="height: 40px; width: 100%; border-radius: .3rem" id="neighborhood-select" disabled>
+                                        <option value="" disabled selected> Choisissez une commune </option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-3 mb-3">
+                                    <select style="height: 40px; width: 100%; border-radius: .3rem" id="street-select" disabled>
+                                        <option value="" disabled selected> Choisissez un quartier </option>
+                                    </select>
+                                </div>
+                            </div -->
         
                             <div class="row">
-                                <b> Adresse </b>
-                                <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label"></label>{{ form.located_at }}
-                                    <span class="danger">{{ form.located_at.errors }}</span>
+                                <div class="col-md-12">
+                                    <b> Adresse </b>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <label class="form-label"></label>{{ form.located_at }}
+                                        <span class="danger">{{ form.located_at.errors }}</span>
+                                    </div>
                                 </div>
                             </div>
         
@@ -78,3 +117,82 @@
 </div>
 
 {% endblock content %}
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#country-select').change(function () {
+            var countryName = $(this).val();
+            if (countryName) {
+                $('#district-select').prop('disabled', false).empty();
+                $('#neighborhood-select').prop('disabled', true).empty();
+                $('#street-select').prop('disabled', true).empty();
+                $.ajax({
+                    url: '{% url "get_districts" %}',
+                    data: { 'country_name': countryName },
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, district) {
+                            $('#district-select').append($('<option>', {
+                                value: district.district,
+                                text: district.district
+                            }));
+                        });
+                    }
+                });
+            } else {
+                $('#district-select').prop('disabled', true).empty();
+                $('#neighborhood-select').prop('disabled', true).empty();
+                $('#street-select').prop('disabled', true).empty();
+            }
+        });
+
+        $('#district-select').change(function () {
+            var districtName = $(this).val();
+            if (districtName) {
+                $('#neighborhood-select').prop('disabled', false).empty();
+                $('#street-select').prop('disabled', true).empty();
+                $.ajax({
+                    url: '{% url "get_neighborhoods" %}',
+                    data: { 'district_name': districtName },
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, neighborhood) {
+                            $('#neighborhood-select').append($('<option>', {
+                                value: neighborhood.neighborhood,
+                                text: neighborhood.neighborhood
+                            }));
+                        });
+                    }
+                });
+            } else {
+                $('#neighborhood-select').prop('disabled', true).empty();
+                $('#street-select').prop('disabled', true).empty();
+            }
+        });
+
+        $('#neighborhood-select').change(function () {
+            var neighborhoodName = $(this).val();
+            if (neighborhoodName) {
+                $('#street-select').prop('disabled', false).empty();
+                $.ajax({
+                    url: '{% url "get_streets" %}',
+                    data: { 'neighborhood_name': neighborhoodName },
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, street) {
+                            $('#street-select').append($('<option>', {
+                                value: street.street,
+                                text: street.street
+                            }));
+                        });
+                    }
+                });
+            } else {
+                $('#street-select').prop('disabled', true).empty();
+            }
+        });
+    });
+</script>
+{% endblock js %}

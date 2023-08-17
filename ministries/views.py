@@ -1,6 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
+
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
 from .forms import (
     MinistriesForm
@@ -27,7 +30,8 @@ def ministry_view(request):
         'ministries': ministries,
     })
     
-
+@login_required
+@never_cache
 def ministry_add(request):
     if request.method == 'POST':
         form = MinistriesForm(request.POST)
@@ -45,7 +49,8 @@ def ministry_add(request):
         'form': form,
     })
     
-
+@login_required
+@never_cache
 def ministry_edit(request, pk):
     ministry = Ministries.objects.get(pk=pk)
 
@@ -64,11 +69,20 @@ def ministry_edit(request, pk):
     })
 
 
-
+@login_required
+@never_cache
 def ministry_delete(request, pk):
     ministry = Ministries.objects.get(pk=pk)
     name = ministry.name
     ministry.delete()
     messages.success(request, 'L\'employé du nom de ' + name + ' a été supprimé avec succès.')
 
+    return redirect('ministries')
+
+@login_required
+@never_cache
+def delete_ministry(request, pk):
+    if request.method == 'POST':
+        ministry = get_object_or_404(Ministries, pk=pk)
+        ministry.delete()
     return redirect('ministries')

@@ -43,8 +43,7 @@
                                 <div class="col-md-4">
                                     <b> Date de Naissance </b>
                                     <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label"></label>
-                                        <input type="datetime-local" class="form-control" name="birth">
+                                        <label class="form-label"></label>{{ form.birth }}
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -80,7 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <b> L'église où vous travaillez </b>
+                                    <b> L'endroit où vous travaillez </b>
                                     <div class="input-group input-group-outline mb-3">
                                         <label class="form-label">  </label>{{ form.works_at }}
                                         <span class="danger">{{ form.works_at.errors }}</span>
@@ -92,8 +91,7 @@
                                 <div class="col-md-12">
                                     <b> Date de début du service au sein de l'église </b>
                                     <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label"></label>
-                                        <input type="datetime-local" class="form-control" name="debuted_at">
+                                        <label class="form-label"></label>{{ form.debuted_at }}
                                     </div>
                                 </div>
                             </div>

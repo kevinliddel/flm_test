@@ -6,42 +6,26 @@
 
 {% block content %}
 
-<!-- Delete Modal -->
-{% for ministry in ministries %}
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <p class="p-4">
-                Etes-vous sure de vouloir supprimer cet employé?
-            </p>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
-                <a class="btn btn-danger" href="{% url 'ministry_delete' pk=ministry.pk %}"> Supprimer </a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
-
-<!-- Look Modal -->
-{% for ministry in ministries %}
-<div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
-
 <div class="container-fluid py-4">
 <div class="row">
     <div class="col-12">
 
-    <a class="add-button" href="{% url 'add_ministry' %}" style="transition: 0.5s; border-radius: 5px; cursor: pointer; margin-bottom: 10px; padding: 15px; background: linear-gradient(-40deg, #45cafc, #303f9f); display: inline-flex; align-items: center; text-transform: none; text-align: center; color: white"> Ajouter un employé </a>
+        <div class="row">
+            <div class="col-sm-9">
+                <a class="add-button" href="{% url 'add_ministry' %}"> Ajouter un employé </a>
+            </div>
+            <div class="col-sm-3">
+                <form class="d-flex" action="" method="GET">{% csrf_token %}
+                    <i class="material-icons mr-2 mt-2 opacity-10">filter_list</i> <span class="mx-2 mt-2"> Filtrer </span>
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">Filtrer...</label>
+                        <input type="text" class="form-control" name="ministry_filter" value="{{ request.GET.ministry_filter }}">
+                    </div>
+                    <button class="btn btn-light d-none" type="submit">
+                    </button>
+                </form>
+            </div>
+        </div>
 
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -85,7 +69,13 @@
                     </td>
                     </td>
                     <td class="align-middle">
-                        <button type="button" data-toggle="modal" data-target="#lookModal" class="btn btn-link text-secondary mb-0">
+                        <button type="button" class="btn btn-link text-secondary mb-0" data-toggle="modal" data-target="#lookModal"
+                            data-name="{{ ministry.name }}" data-surname="{{ ministry.surname }}"
+                            data-birth="{{ ministry.birth }}" data-birthplace="{{ ministry.birthplace }}"
+                            data-sex="{{ ministry.sex }}" data-age="{{ ministry.age }}"
+                            data-service="{{ ministry.service }}" data-works-at="{{ ministry.works_at }}"
+                            data-debuted-at="{{ ministry.debuted_at }}"
+                        >
                             <i class="material-icons fs-3 opacity-10">perm_contact_calendar</i>
                         </button>
 
@@ -95,19 +85,27 @@
                             </a>
                         </button>
 
-                        <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-link text-secondary mb-0">
+                        <button type="button" class="btn btn-link text-secondary mb-0" data-toggle="modal" data-target="#deleteModal"
+                            data-ministry-id="{{ ministry.pk }}" data-ministry-name="{{ ministry.name }} {{ ministry.surname }}"
+                        >
                             <i class="material-icons fs-3 opacity-10">highlight_off</i>
                         </button>
 
-                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <p class="p-4">
-                                        Etes-vous sure de vouloir supprimer cet employé?
-                                    </p>
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Êtes-vous sûr de vouloir supprimer <span id="modal-ministry-name"></span> ?</p>
+                                    </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
-                                        <a class="btn btn-danger" href="{% url 'ministry_delete' pk=ministry.pk %}"> Supprimer </a>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                        <button type="button" class="btn btn-danger" onclick="deleteMinistry()">Supprimer</button>
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +113,19 @@
 
                         <div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content">
+                                <div class="modal-content p-3">
+                                    <div class="modal-header">
+                                        <i class="material-icons opacity-10" style="font-size: 50px">people</i>
+                                    </div>
+
+                                    <br>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Nom et prénom: </b> <span id="modal-data-name"></span> <span id="modal-data-surname"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Née le: </b>  <span id="modal-data-birth"></span> <b> à </b> <span id="modal-data-birthplace"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Sexe: </b> <span id="modal-data-sex"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Age: </b> <span id="modal-data-age"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Votre service au sein de l'église: </b> <span id="modal-data-service"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> L'endroit où vous travaillez: </b> <span id="modal-data-works-at"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Date de début du service au sein de l'église: </b> <span id="modal-data-debuted-at"></span> </p>
                                     
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
@@ -164,3 +174,51 @@
 </div>
 
 {% endblock content %}
+
+{% block js %}
+<script>
+    $(document).ready(function() {
+        $('#lookModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var modal = $(this);
+            
+            modal.find('#modal-data-name').text(button.data('name'));
+            modal.find('#modal-data-surname').text(button.data('surname'));
+            modal.find('#modal-data-birth').text(button.data('birth'));
+            modal.find('#modal-data-birthplace').text(button.data('birthplace'));
+            modal.find('#modal-data-sex').text(button.data('sex'));
+            modal.find('#modal-data-age').text(button.data('age'));
+            modal.find('#modal-data-service').text(button.data('service'));
+            modal.find('#modal-data-works-at').text(button.data('works-at'));
+            modal.find('#modal-data-debuted-at').text(button.data('debuted-at'));
+        });
+    });
+
+    $(document).ready(function() {
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var modal = $(this);
+    
+            var ministryId = button.data('ministry-id');
+            var ministryName = button.data('ministry-name');
+    
+            modal.find('#modal-ministry-name').text(ministryName);
+            modal.find('.btn-danger').attr('data-ministry-id', ministryId);
+        });
+    });
+    
+    function deleteMinistry() {
+        var ministryId = $('.btn-danger').data('ministry-id');
+        var form = $('<form>', {
+            'method': 'POST',
+            'action': '{% url "ministry_delete" pk=0 %}'.replace('0', ministryId),
+        }).append($('<input>', {
+            'type': 'hidden',
+            'name': 'csrfmiddlewaretoken',
+            'value': '{{ csrf_token }}'
+        })).appendTo('body');
+        form.submit();
+    }
+    
+</script>
+{% endblock js %}

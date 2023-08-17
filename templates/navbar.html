@@ -1,18 +1,26 @@
 {% load static %}
 
 <!-- Navbar -->
-<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl position-sticky blur shadow-blur mt-4 left-auto top-1 z-index-sticky" id="navbarBlur" data-scroll="true" navbar-scroll="true">
     <div class="container-fluid py-1 px-3">
       <nav aria-label="breadcrumb">
-        <h3 class="font-weight-bolder mb-0"> Fiangonana Loterana Malagasy </h3>
+        <h3 class="font-weight-bolder mb-0"> 
+          <a href="{% url 'home' %}" style="text-decoration: none"> Fiangonana Loterana Malagasy </a>
+        </h3>
       </nav>
       <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-        <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-          <div class="input-group input-group-outline">
-            <label class="form-label">Recherche...</label>
-            <input type="text" class="form-control">
+        
+        <form class="ms-md-auto pe-md-3 d-flex align-items-center" action="{% url 'query' %}" method="GET">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="input-group input-group-outline">
+              <label class="form-label">Rechercher... </label>
+              <input type="text" class="form-control" name="q" value="{{ request.GET.q }}" required>
+            </div>
           </div>
-        </div>
+          <button class="btn btn-light d-none" type="submit">
+          </button>
+        </form>
+
         <ul class="navbar-nav justify-content-end">
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
             <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -23,12 +31,42 @@
               </div>
             </a>
           </li>
-          <div class="nav-item px-2 d-flex align-items-center">
+
+          <div class="dropdown px-2 d-flex align-items-center">
+            <button style="background: none; color: black; border: white" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="material-icons opacity-10">build</i>
+            </button>
+            <div class="dropdown-menu" style="min-width: 14rem !important;" aria-labelledby="dropdownMenuButton">
+              <p class="container text-muted-xs text-center">
+                <img src="{{ request.user.picture.url }}" style="width: 50px; border-radius: 50%">
+                <b> {{ request.user.get_full_name|truncatechars:15 }} </b>
+                <br>
+                <b> Dernière connexion: </b> {{ request.user.last_login|date }}
+              </p>
+              
+              <hr>
+              <div style="display: flex; align-items: center; padding: 0 0.5rem">
+                <li class="{% if request.path == ep %}active{% endif %}">
+                  <a class="" href="{% url 'edit_profile' %}" style="text-decoration: none"><i class="fas fa-cogs"></i> Modifier le profil </a>
+                </li>
+              </div>
+    
+              <hr>
+              <div style="display: flex; align-items: center; padding: 0 0.5rem">
+                <li class="{% if request.path == cp %}active{% endif %}">
+                  <a href="{% url 'change_password' %}" style="text-decoration: none"><i class="fas fa-key"></i> Changer le mot de passe </a>
+                </li>
+              </div>
+            </div>
+          </div>
+
+          <!-- div class="nav-item px-2 d-flex align-items-center">
             <i class="material-icons opacity-10">build</i>
             <div class="form-check form-switch ps-0 ms-2 my-auto">
               <input class="form-check-input mt-0 ms-auto" type="checkbox" id="navbarFixed" onclick="navbarFixed(this)">
             </div>
-          </div>
+          </div -->
           <div class="nav-item px-2 d-flex align-items-center">
             <i class="material-icons opacity-10">wb_sunny</i>
               <div class="form-check form-switch ps-0 ms-2 my-auto">

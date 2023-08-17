@@ -1,17 +1,22 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
+
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
 from .forms import (
     MembersForm
 )
 from .models import Members
 
+# from dal import autocomplete
 
 # ########################################################
 # member views
 # ########################################################
-
+@login_required
+@never_cache
 def member_view(request):
     members = Members.objects.all()
     paginator = Paginator(members, 10)
@@ -26,8 +31,9 @@ def member_view(request):
         'title': "Liste des membres de l'église",
         'members': members,
     })
-    
 
+@login_required
+@never_cache
 def member_add(request):
     if request.method == 'POST':
         form = MembersForm(request.POST)
@@ -45,7 +51,8 @@ def member_add(request):
         'form': form,
     })
     
-
+@login_required
+@never_cache
 def member_edit(request, pk):
     member = Members.objects.get(pk=pk)
 
@@ -64,11 +71,29 @@ def member_edit(request, pk):
     })
 
 
-
+@login_required
+@never_cache
 def member_delete(request, pk):
     member = Members.objects.get(pk=pk)
     name = member.name
     member.delete()
     messages.success(request, 'Le membre du nom de ' + name + ' a été supprimé avec succès.')
 
+    return redirect('members')
+
+#class MemberAutocomplete(autocomplete.Select2QuerySetView):
+#    def get_queyset(self):
+#        qs = Members.objects.all()
+#        
+#        if self.q:
+#            qs = qs.filter(name__istartswith=self.q)
+#            
+#        return qs
+
+@login_required
+@never_cache
+def delete_member(request, pk):
+    if request.method == 'POST':
+        member = get_object_or_404(Members, pk=pk)
+        member.delete()
     return redirect('members')

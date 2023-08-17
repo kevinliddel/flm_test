@@ -12,8 +12,7 @@ class PlacesManager(models.Manager):
                          Q(street__icontains=query) 
                         )
             qs = qs.filter(or_lookup).distinct() # distinct() is often necessary with Q lookups
-        return qs
-    
+        return qs    
 
 class Places(models.Model):
     country = models.CharField(max_length=200, null=True)
@@ -24,5 +23,5 @@ class Places(models.Model):
     objects = PlacesManager()
 
     def __str__(self):
-        return self.name
+        return f"{self.country}, {self.district}, {self.neighborhood}; {self.street}"
     

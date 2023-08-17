@@ -6,43 +6,27 @@
 
 {% block content %}
 
-<!-- Delete Modal -->
-{% for member in members %}
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <p class="p-4">
-                Etes-vous sure de vouloir supprimer ce membre de l'église?
-            </p>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
-                <a class="btn btn-danger" href="{% url 'member_delete' pk=member.pk %}"> Supprimer </a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
-
-<!-- Look Modal -->
-{% for member in members %}
-<div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
-
 <div class="container-fluid py-4">
 <div class="row">
     <div class="col-12">
 
-    <a class="add-button" href="{% url 'add_member' %}" style="transition: 0.5s; border-radius: 5px; cursor: pointer; margin-bottom: 10px; padding: 15px; background: linear-gradient(-40deg, #45cafc, #303f9f); display: inline-flex; align-items: center; text-transform: none; text-align: center; color: white"> Ajouter un membre </a>
-
+        <div class="row">
+            <div class="col-sm-9">
+                <a class="add-button" href="{% url 'add_member' %}"> Ajouter un membre </a>
+            </div>
+            <div class="col-sm-3">
+                <form class="d-flex" action="" method="GET">{% csrf_token %}
+                    <i class="material-icons mr-2 mt-2 opacity-10">filter_list</i> <span class="mx-2 mt-2"> Filtrer </span>
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">Filtrer...</label>
+                        <input type="text" class="form-control" name="member_filter" value="{{ request.GET.member_filter }}">
+                    </div>
+                    <button class="btn btn-light d-none" type="submit">
+                    </button>
+                </form>
+            </div>
+        </div>
+        
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
@@ -56,7 +40,7 @@
                     <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Nom et Prénom </th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Date et lieu de naissance </th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Eglise </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> "Zanak' Ampierlezana" </th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Famille de </th>
                     <th></th>
                     </tr>
@@ -85,7 +69,16 @@
                     </td>
                     </td>
                     <td class="align-middle">
-                        <button type="button" data-toggle="modal" data-target="#lookModal" class="btn btn-link text-secondary mb-0">
+                        <button type="button" class="btn btn-link text-secondary mb-0" data-toggle="modal" data-target="#lookModal"
+                            data-name="{{ member.name }}" data-surname="{{ member.surname }}"
+                            data-birth="{{ member.birth }}" data-birthplace="{{ member.birthplace }}"
+                            data-sex="{{ member.sex }}" data-age="{{ member.age }}"
+                            data-job="{{ member.job }}" data-diploma="{{ member.diploma }}"
+                            data-baptism="{{ member.baptism}}" data-sacrament="{{ member.sacrament }}"
+                            data-faction="{{ member.faction }}" data-situation="{{ member.situation }}"
+                            data-familytree="{{ member.familytree }}" data-marriage="{{ member.marriage }}"
+                            data-engagement="{{ member.engagement }}"
+                        >
                             <i class="material-icons fs-3 opacity-10">perm_contact_calendar</i>
                         </button>
 
@@ -95,28 +88,53 @@
                             </a>
                         </button>
 
-                        <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-link text-secondary mb-0">
+                        <button type="button" class="btn btn-link text-secondary mb-0" data-toggle="modal" data-target="#deleteModal"
+                            data-member-id="{{ member.pk }}" data-member-name="{{ member.name }} {{ member.surname }}"
+                        >
                             <i class="material-icons fs-3 opacity-10">highlight_off</i>
                         </button>
 
-                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <p class="p-4">
-                                        Etes-vous sure de vouloir supprimer ce membre de l'église?
-                                    </p>
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Êtes-vous sûr de vouloir supprimer le membre du nom de <span id="modal-member-name"></span> ?</p>
+                                    </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
-                                        <a class="btn btn-danger" href="{% url 'member_delete' pk=member.pk %}"> Supprimer </a>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                        <button type="button" class="btn btn-danger" onclick="deleteMember()">Supprimer</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="lookModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content">
-                                    
+                                <div class="modal-content p-3">
+                                    <div class="modal-header">
+                                        <i class="material-icons opacity-10" style="font-size: 50px">people</i>
+                                    </div>
+                        
+                                    <br>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Nom et prénom: </b> <span id="modal-data-name"></span> <span id="modal-data-surname"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Née le: </b>  <span id="modal-data-birth"></span> <b> à </b> <span id="modal-data-birthplace"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Sexe: </b> <span id="modal-data-sex"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Age: </b> <span id="modal-data-age"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Métier ou occupation: </b>  <span id="modal-data-job"></span> , avec un diplôme de <span id="modal-data-diploma"></span>  </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Date du baptême: </b> <span id="modal-data-baptism"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Date de la confirmation: </b> <span id="modal-data-sacrament"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> "Zanak'Ampielezana": </b> <span id="modal-data-faction"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Situation familiale: </b> <span id="modal-data-situation"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Date de fiançaille: </b> <span id="modal-data-engagement"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> Date de marriage: </b> <span id="modal-data-marriage"></span> </p>
+                                    <p class="p-auto"> <b style="color: #009FF0"> De la famille de: </b> <span id="modal-data-familytree"></span> </p>
+                        
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
                                     </div>
@@ -164,3 +182,58 @@
 </div>
 
 {% endblock content %}
+
+
+{% block js %}
+<script>
+    $(document).ready(function() {
+        $('#lookModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var modal = $(this);
+            
+            modal.find('#modal-data-name').text(button.data('name'));
+            modal.find('#modal-data-surname').text(button.data('surname'));
+            modal.find('#modal-data-birth').text(button.data('birth'));
+            modal.find('#modal-data-birthplace').text(button.data('birthplace'));
+            modal.find('#modal-data-sex').text(button.data('sex'));
+            modal.find('#modal-data-age').text(button.data('age'));
+            modal.find('#modal-data-baptism').text(button.data('baptism'));
+            modal.find('#modal-data-faction').text(button.data('faction'));
+            modal.find('#modal-data-situation').text(button.data('situation'));
+            modal.find('#modal-data-familytree').text(button.data('familytree'));
+            modal.find('#modal-data-job').text(button.data('job'));
+            modal.find('#modal-data-diploma').text(button.data('diploma'));
+            modal.find('#modal-data-engagement').text(button.data('engagement'));
+            modal.find('#modal-data-marriage').text(button.data('marriage'));
+            modal.find('#modal-data-sacrament').text(button.data('sacrament'));
+        });
+    });
+
+    $(document).ready(function() {
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var modal = $(this);
+    
+            var memberId = button.data('member-id');
+            var memberName = button.data('member-name');
+    
+            modal.find('#modal-member-name').text(memberName);
+            modal.find('.btn-danger').attr('data-member-id', memberId);
+        });
+    });
+    
+    function deleteMember() {
+        var memberId = $('.btn-danger').data('member-id');
+        var form = $('<form>', {
+            'method': 'POST',
+            'action': '{% url "member_delete" pk=0 %}'.replace('0', memberId),
+        }).append($('<input>', {
+            'type': 'hidden',
+            'name': 'csrfmiddlewaretoken',
+            'value': '{{ csrf_token }}'
+        })).appendTo('body');
+        form.submit();
+    }
+    
+</script>
+{% endblock js %}

@@ -10,6 +10,22 @@ SEX = (
 )
 
 
+PASTOR = "Pasteur"
+THEOLOGIAN = "Théologien"
+DEACON = "Diacre"
+EVANGELIST = "Evangeliste"
+CATECHIST = "Catéchiste"
+SERVANT = "Berger"
+
+SERVICE = (
+    (PASTOR, "Pasteur"),
+    (THEOLOGIAN, "Théologien"),
+    (DEACON, "Diacre"),
+    (EVANGELIST, "Evangeliste"),
+    (CATECHIST, "Catéchiste"),
+    (SERVANT, "Berger"),
+)
+
 class MinistriesManager(models.Manager):
     def search(self, query=None):
         qs = self.get_queryset()
@@ -25,13 +41,13 @@ class MinistriesManager(models.Manager):
 class Ministries(models.Model):
     name = models.CharField(max_length=200, null=True)
     surname = models.CharField(max_length=200, null=True)
-    birth = models.DateTimeField(auto_now=False, auto_now_add=True, null=True)
+    birth = models.DateTimeField(auto_now=False, auto_now_add=False, null=True)
     birthplace = models.CharField(max_length=200, null=True)
     age = models.IntegerField(blank=True, null=True)
     sex = models.CharField(max_length=200, choices=SEX, blank=True, null=True, default="Homme")
-    service = models.CharField(max_length=200, null=True)
+    service = models.CharField(max_length=200, choices=SERVICE, null=True)
     works_at = models.CharField(max_length=200, null=True)
-    debuted_at = models.DateTimeField(auto_now=False, auto_now_add=True, null=True)
+    debuted_at = models.DateTimeField(auto_now=False, auto_now_add=False, null=True)
     
     objects = MinistriesManager()
 

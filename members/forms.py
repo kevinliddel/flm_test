@@ -5,10 +5,8 @@ from .models import Members, SEX, SITUATION
 class MembersForm(forms.ModelForm):  
     class Meta:
         model = Members
-        exclude = ['birth', 'baptism', 'sacrament', 'engagement', 'marriage']
-    
+        exclude = []
 
-    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs.update({'class': 'form-control'})
@@ -21,4 +19,10 @@ class MembersForm(forms.ModelForm):
         self.fields['faction'].widget.attrs.update({'class': 'form-control'})
         self.fields['situation'].widget.attrs.update({'class': 'form-control'})
         self.fields['familytree'].widget.attrs.update({'class': 'form-control'})
+        
+        self.fields['birth'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        self.fields['baptism'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        self.fields['sacrament'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        self.fields['engagement'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        self.fields['marriage'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
     

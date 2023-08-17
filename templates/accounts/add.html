@@ -1,0 +1,209 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/logo.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    
+    <title>
+        {% block title %} {{title}} {% endblock title %}
+    </title>
+
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+
+    <!-- Nucleo Icons -->
+    <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{% static 'css/material-dashboard.css' %}" rel="stylesheet" />
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Nepcha Analytics (nepcha.com) -->
+    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+    <!--    script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script -->
+</head>
+
+<body class="g-sidenav-show  bg-gray-200">
+    <style>
+        .active-bg-info {
+            background: linear-gradient(-40deg, #45cafc, #303f9f);
+        }
+
+        .add-button{
+            transition: 0.5s; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-bottom: 10px; 
+            padding: 15px; 
+            background: linear-gradient(-40deg, #45cafc, #303f9f); 
+            display: inline-flex; 
+            align-items: center; 
+            text-transform: none; 
+            text-align: center; 
+            color: white
+        }
+
+        .add-button:hover{
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+    <!-- Main Container -->
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg px-5">
+
+        <!-- Navbar -->
+        {% include 'navbar.html' %}
+
+         <!-- Content -->
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-md-10 mx-auto mt-5">
+
+                    <form action="" role="form" class="text-start" method="POST">{% csrf_token %}
+                        <div class="row mb-3 justify-content-center">
+                            <div class="col-md-7">
+                                <div class="card">
+                                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+                                            <h6 class="text-white text-center text-capitalize ps-3"> Ajouter un utilisateur </h6>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="p-3">
+                                        <div class="row">
+                                            <b> ID </b>
+                                            <div class="input-group input-group-outline mb-3">
+                                                <label class="form-label"> ID </label>{{ form.username }}
+                                                <span class="danger">{{ form.username.errors }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <b> Nom </b>
+                                                <div class="input-group input-group-outline mb-3">
+                                                    <label class="form-label"> {{ form.first_name.label }} </label>{{ form.first_name }}
+                                                    <span class="danger">{{ form.first_name.errors }}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <b> Prénom </b>
+                                                <div class="input-group input-group-outline mb-3">
+                                                    <label class="form-label"> {{ form.last_name.label }} </label>{{ form.last_name }}
+                                                    <span class="danger">{{ form.last_name.errors }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <b> Adresse email </b>
+                                                <div class="input-group input-group-outline mb-3">
+                                                    <label class="form-label"> {{ form.email.label }} </label>{{ form.email }}
+                                                    <span class="danger">{{ form.email.errors }}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <b> Numéro téléphone </b>
+                                                <div class="input-group input-group-outline mb-3">
+                                                    <label class="form-label"> {{ form.phone.label }} </label>{{ form.phone }}
+                                                    <span class="danger">{{ form.phone.errors }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <b> Adresse </b>
+                                            <div class="input-group input-group-outline mb-3">
+                                                <label class="form-label"> {{ form.address.label }} </label>{{ form.address }}
+                                                <span class="danger">{{ form.address.errors }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <b> Mot de passe </b>
+                                                <div class="input-group input-group-outline mb-3">
+                                                    <label class="form-label"> {{ form.password1.label }} </label>{{ form.password1 }}
+                                                    <span class="danger">{{ form.password1.errors }}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <b> Confirmer votre mot de passe </b>
+                                                <div class="input-group input-group-outline mb-3">
+                                                    <label class="form-label"> {{ form.password2.label }} </label>{{ form.password2 }}
+                                                    <span class="danger">{{ form.password2.errors }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <center><div class="col-md-6">
+                                            <input class="btn btn-outline-info" type="submit" value="Enregistrer les données">          
+                                        </div></center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Navbar -->
+        {% include 'footer.html' %}
+
+    </main>
+
+    <!--   Core JS Files   -->
+    <script src="{% static 'js/core/popper.min.js' %}"></script>
+    <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{% static 'js/material-dashboard.min.js' %}"></script>
+
+    {% block js %}
+    {% endblock js %}
+
+</body>
+
+</html>

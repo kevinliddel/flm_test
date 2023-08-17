@@ -6,42 +6,26 @@
 
 {% block content %}
 
-<!-- Delete Modal -->
-{% for baptism in baptisms %}
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <p class="p-4">
-                Etes-vous sure de vouloir supprimer ce baptême?
-            </p>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
-                <a class="btn btn-danger" href="{% url 'baptism_delete' pk=baptism.pk %}"> Supprimer </a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
-
-<!-- Look Modal -->
-{% for baptism in baptisms %}
-<div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
-
 <div class="container-fluid py-4">
 <div class="row">
     <div class="col-12">
 
-    <a class="add-button" href="{% url 'add_baptism' %}" style="transition: 0.5s; border-radius: 5px; cursor: pointer; margin-bottom: 10px; padding: 15px; background: linear-gradient(-40deg, #45cafc, #303f9f); display: inline-flex; align-items: center; text-transform: none; text-align: center; color: white"> Ajouter un baptême </a>
+        <div class="row">
+            <div class="col-sm-9">
+                <a class="add-button" href="{% url 'add_baptism' %}"> Ajouter un baptême </a>
+            </div>
+            <div class="col-sm-3">
+                <form class="d-flex" action="" method="GET">{% csrf_token %}
+                    <i class="material-icons mr-2 mt-2 opacity-10">filter_list</i> <span class="mx-2 mt-2"> Filtrer </span>
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">Filtrer...</label>
+                        <input type="text" class="form-control" name="baptism_filter" value="{{ request.GET.baptism_filter }}">
+                    </div>
+                    <button class="btn btn-light d-none" type="submit">
+                    </button>
+                </form>
+            </div>
+        </div>
 
     <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -85,38 +69,67 @@
                 </td>
                 </td>
                 <td class="align-middle">
-                    <button type="button" data-toggle="modal" data-target="#lookModal" class="btn btn-link text-secondary mb-0">
+                    <button type="button" class="btn btn-link text-secondary mb-0" data-toggle="modal" data-target="#lookModal"
+                        data-name="{{ baptism.name }}" data-surname="{{ baptism.surname }}"
+                        data-birth="{{ baptism.birth }}" data-birthplace="{{ baptism.birthplace }}"
+                        data-sex="{{ baptism.sex }}" data-age="{{ baptism.age }}"
+                        data-baptism-date="{{ baptism.baptism_date }}"
+                        data-father="{{ baptism.father }}" data-mother="{{ baptism.mother }}"
+                        data-familytree="{{ baptism.familytree }}" data-responsible="{{ baptism.responsible }}"
+                    >
                         <i class="material-icons fs-3 opacity-10">perm_contact_calendar</i>
                     </button>
 
-                    <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-link text-secondary mb-0">
+                    <button type="button" class="btn btn-link text-secondary mb-0">
                         <a href="{% url 'edit_baptism' pk=baptism.pk %}">
                             <i class="material-icons fs-3 opacity-10">mode_edit</i>
                         </a>
                     </button>
 
-                    <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-link text-secondary mb-0">
+                    <button type="button" class="btn btn-link text-secondary mb-0" data-toggle="modal" data-target="#deleteModal"
+                        data-baptism-id="{{ baptism.pk }}" data-baptism-name="{{ baptism.name }} {{ baptism.surname }}"
+                    >
                         <i class="material-icons fs-3 opacity-10">highlight_off</i>
                     </button>
 
-                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <p class="p-4">
-                                    Etes-vous sure de vouloir supprimer ce baptême de la liste?
-                                </p>
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Êtes-vous sûr de vouloir supprimer le baptême de <span id="modal-baptism-name"></span> ?</p>
+                                </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> Annuler </button>
-                                    <a class="btn btn-danger" href="{% url 'baptism_delete' pk=baptism.pk %}"> Supprimer </a>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                    <button type="button" class="btn btn-danger" onclick="deleteBaptism()">Supprimer</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
 
-                    <div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="lookModal" tabindex="-1" aria-labelledby="lookModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content">
-                                
+                            <div class="modal-content p-3">
+                                <div class="modal-header">
+                                    <i class="material-icons opacity-10" style="font-size: 50px">receipt_long</i>
+                                </div>
+                    
+                                <br>
+                                <p class="p-auto"> <b style="color: #009FF0"> Nom et prénom: </b> <span id="modal-data-name"></span> <span id="modal-data-surname"></span> </p>
+                                <p class="p-auto"> <b style="color: #009FF0"> Née le: </b>  <span id="modal-data-birth"></span> <b> à </b> <span id="modal-data-birthplace"></span> </p>
+                                <p class="p-auto"> <b style="color: #009FF0"> Sexe: </b> <span id="modal-data-sex"></span> </p>
+                                <p class="p-auto"> <b style="color: #009FF0"> Age: </b> <span id="modal-data-age"></span> </p>
+                                <p class="p-auto"> <b style="color: #009FF0"> Date du baptême: </b> <span id="modal-data-baptism-date"></span> </p>
+                                <p class="p-auto"> <b style="color: #009FF0"> Fils ou fille de: </b> <span id="modal-data-father"></span> <b> et de </b> <span id="modal-data-mother"></span> </p>
+                                <p class="p-auto"> <b style="color: #009FF0"> De la famille de: </b> <span id="modal-data-familytree"></span> </p>
+                                <p class="p-auto"> <b style="color: #009FF0"> Sous la tutelle de: </b> <span id="modal-data-responsible"></span> </p>
+                    
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal"> Fermer </button>
                                 </div>
@@ -164,3 +177,53 @@
 </div>
 
 {% endblock content %}
+
+{% block js %}
+<script>
+    $(document).ready(function() {
+        $('#lookModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var modal = $(this);
+            
+            modal.find('#modal-data-name').text(button.data('name'));
+            modal.find('#modal-data-surname').text(button.data('surname'));
+            modal.find('#modal-data-birth').text(button.data('birth'));
+            modal.find('#modal-data-birthplace').text(button.data('birthplace'));
+            modal.find('#modal-data-sex').text(button.data('sex'));
+            modal.find('#modal-data-age').text(button.data('age'));
+            modal.find('#modal-data-baptism-date').text(button.data('baptism-date'));
+            modal.find('#modal-data-father').text(button.data('father'));
+            modal.find('#modal-data-mother').text(button.data('mother'));
+            modal.find('#modal-data-familytree').text(button.data('familytree'));
+            modal.find('#modal-data-responsible').text(button.data('responsible'));
+        });
+    });
+
+    $(document).ready(function() {
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var modal = $(this);
+    
+            var baptismId = button.data('baptism-id');
+            var baptismName = button.data('baptism-name');
+    
+            modal.find('#modal-baptism-name').text(baptismName);
+            modal.find('.btn-danger').attr('data-baptism-id', baptismId);
+        });
+    });
+    
+    function deleteBaptism() {
+        var baptismId = $('.btn-danger').data('baptism-id');
+        var form = $('<form>', {
+            'method': 'POST',
+            'action': '{% url "baptism_delete" pk=0 %}'.replace('0', baptismId),
+        }).append($('<input>', {
+            'type': 'hidden',
+            'name': 'csrfmiddlewaretoken',
+            'value': '{{ csrf_token }}'
+        })).appendTo('body');
+        form.submit();
+    }
+    
+</script>
+{% endblock js %}

@@ -44,8 +44,7 @@
                                     <div class="col-md-6">
                                         <b> Date de Naissance </b>
                                         <div class="input-group input-group-outline mb-3">
-                                            <label class="form-label"></label>
-                                            <input type="datetime-local" class="form-control" name="birth">
+                                            <label class="form-label"></label>{{ form.birth }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -58,29 +57,29 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <b> Age </b>
                                         <div class="input-group input-group-outline mb-3">
                                             <label class="form-label"> Votre âge </label>{{ form.age }}
                                             <span class="danger">{{ form.age.errors }}</span>
                                         </div>
                                     </div>
-                                </div>
-            
-                                <div class="row">
-                                    <b> Sexe </b>
-                                    <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label"></label>{{ form.sex }}
-                                        <span class="danger">{{ form.sex.errors }}</span>
+
+                                    <div class="col-md-6">
+                                        <b> Sexe </b>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label"></label>{{ form.sex }}
+                                            <span class="danger">{{ form.sex.errors }}</span>
+                                        </div>
                                     </div>
                                 </div>
+            
             
                                 <div class="row">
                                     <div class="col-md-12">
                                         <b> Date du baptême </b>
                                         <div class="input-group input-group-outline mb-3">
-                                            <label class="form-label"></label>
-                                            <input type="datetime-local" class="form-control" name="baptism_date">
+                                            <label class="form-label"></label>{{ form.baptism_date }}
                                         </div>
                                     </div>
                                 </div>
@@ -92,14 +91,14 @@
                                         <b> Nom du Père </b>
                                         <div class="input-group input-group-outline mb-3">
                                             <label class="form-label"> Nom du Père </label>{{ form.father }}
-                                            <span class="danger">{{ form.faction.errors }}</span>
+                                            <span class="danger">{{ form.father.errors }}</span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <b> Nom de la Mère </b>
                                         <div class="input-group input-group-outline mb-3">
                                             <label class="form-label"> Nom de la Mère </label>{{ form.mother }}
-                                            <span class="danger">{{ form.faction.errors }}</span>
+                                            <span class="danger">{{ form.mother.errors }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -123,6 +122,36 @@
                                 </div>
 
                             </div>
+
+                            <!-- b> Localité </b>
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <select style="height: 40px; width: 100%; border-radius: .3rem" id="country-select" name="country">
+                                        <option value="" disabled selected> Choisissez une région </option>
+                                        {% for country in form.fields.country.choices %}
+                                            <option value="{{ country.0 }}">{{ country.1 }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-3 mb-3">
+                                    <select style="height: 40px; width: 100%; border-radius: .3rem" id="district-select" name="district" disabled>
+                                        <option value="" disabled selected> Choisissez un district </option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-3 mb-3">
+                                    <select style="height: 40px; width: 100%; border-radius: .3rem" id="neighborhood-select" name="neighborhood" disabled>
+                                        <option value="" disabled selected> Choisissez une commune </option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-3 mb-3">
+                                    <select style="height: 40px; width: 100%; border-radius: .3rem" id="street-select" name="street" disabled>
+                                        <option value="" disabled selected> Choisissez un quartier </option>
+                                    </select>
+                                </div>
+                            </div -->
                             
                             <center><div class="col-md-6">
                                 <input class="btn btn-outline-info" type="submit" value="Enregistrer les données">          
@@ -138,3 +167,86 @@
 </div>
 
 {% endblock content %}
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#country-select').change(function () {
+            var countryName = $(this).val();
+            if (countryName) {
+                $('#district-select').prop('disabled', false).empty();
+                $('#neighborhood-select').prop('disabled', true).empty();
+                $('#street-select').prop('disabled', true).empty();
+                $.ajax({
+                    url: '{% url "get_districts" %}',
+                    data: { 'country_name': countryName },
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, district) {
+                            $('#district-select').append($('<option>', {
+                                value: district.district,
+                                text: district.district
+                            }));
+                        });
+                    }
+                });
+            } else {
+                $('#district-select').prop('disabled', true).empty();
+                $('#neighborhood-select').prop('disabled', true).empty();
+                $('#street-select').prop('disabled', true).empty();
+            }
+        });
+
+        $('#district-select').change(function () {
+            var districtName = $(this).val();
+            if (districtName) {
+                $('#neighborhood-select').prop('disabled', false).empty();
+                $('#street-select').prop('disabled', true).empty();
+                $.ajax({
+                    url: '{% url "get_neighborhoods" %}',
+                    data: { 'district_name': districtName },
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, neighborhood) {
+                            $('#neighborhood-select').append($('<option>', {
+                                value: neighborhood.neighborhood,
+                                text: neighborhood.neighborhood
+                            }));
+                        });
+                    }
+                });
+            } else {
+                $('#neighborhood-select').prop('disabled', true).empty();
+                $('#street-select').prop('disabled', true).empty();
+            }
+        });
+
+        $('#neighborhood-select').change(function () {
+            var neighborhoodName = $(this).val();
+            if (neighborhoodName) {
+                $('#street-select').prop('disabled', false).empty();
+                $.ajax({
+                    url: '{% url "get_streets" %}',
+                    data: { 'neighborhood_name': neighborhoodName },
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, street) {
+                            $('#street-select').append($('<option>', {
+                                value: street.street,
+                                text: street.street
+                            }));
+                        });
+                    }
+                });
+            } else {
+                $('#street-select').prop('disabled', true).empty();
+            }
+        });
+
+        $('form').submit(function() {
+            console.log("Form Data:", $(this).serialize()); // Debug print
+        });
+    });
+</script>
+{% endblock js %}

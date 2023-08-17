@@ -1,173 +1,167 @@
-{% extends 'base.html' %}
-
-{% block title %} {{title}} {% endblock title %}
-
 {% load static %}
+{% load crispy_forms_tags %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="container-fluid py-4">
-    <div class="row">
-      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">people</i>
-            </div>
-            <div class="text-end pt-1">
-              <h4 class="mb-0 text-capitalize">Membres de l'église</h4>
-              <h4 class="mb-0">7,000</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+55% </span>than last week</p>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/logo.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    
+    <title>
+        {% block title %} Fiangonana Loterana Malagasy {% endblock title %}
+    </title>
+
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+    
+    <!-- Nucleo Icons -->
+    <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
+    
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{% static 'css/material-dashboard.css' %}" rel="stylesheet" />
+    
+    <!-- Nepcha Analytics (nepcha.com) -->
+    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+    <!-- script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script -->
+</head>
+
+<body class="bg-gray-200">
+
+    <div class="container position-sticky z-index-sticky top-0">
+        <div class="row">
+          <div class="col-12">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+              <div class="container-fluid ps-2 pe-0">
+                <p class="navbar-brand font-weight-bolder ms-lg-0 ms-3 mb-0">
+                  <img src="{% static 'img/logo.png' %}" style="height: 50px" alt="main_logo">
+                  F.L.M
+                </p>
+                <p class="navbar-brand font-weight-bolder ms-lg-0 ms-3 mb-0">
+                  Finoana irery Ihany
+                </p>
+                <p class="navbar-brand font-weight-bolder ms-lg-0 ms-3 mb-0">
+                  Soratra Masina irery Ihany
+                </p>
+                <p class="navbar-brand font-weight-bolder ms-lg-0 ms-3 mb-0">
+                  Jesosy irery Ihany
+                </p>
+              </div>
+            </nav>
+            <!-- End Navbar -->
           </div>
         </div>
-      </div>
-      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <div class="text-end pt-1">
-              <h4 class="mb-0 text-capitalize">Membres baptisés</h4>
-              <h4 class="mb-0">2,300</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+3% </span>than last month</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">fingerprint</i>
-            </div>
-            <div class="text-end pt-1">
-              <h4 class="mb-0 text-capitalize">Confirmation</h4>
-              <h4 class="mb-0">750</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">-2%</span> than yesterday</p>
-          </div>
-        </div>
-      </div>
     </div>
-   
-    <div class="row mt-5">
-      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">location_city</i>
-            </div>
-            <div class="text-end pt-1">
-              <h4 class="mb-0 text-capitalize">Nombre d'églises</h4>
-              <h4 class="mb-0">30</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+55% </span>than last week</p>
-          </div>
-        </div>
-      </div>        
-      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">style</i>
-            </div>
-            <div class="text-end pt-1">
-              <h4 class="mb-0 text-capitalize">Synode</h4>
-              <h4 class="mb-0">150</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+3% </span>than last month</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">wc</i>
-            </div>
-            <div class="text-end pt-1">
-              <h4 class="mb-0 text-capitalize">Total des employés</h4>
-              <h4 class="mb-0">240</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">-2%</span> than yesterday</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <main class="main-content mt-0">
+        <div class="page-header align-items-start min-vh-100">
+            <span class="mask bg-gradient-dark opacity-6"></span>
+            <div class="container mt-10">
+                <div class="row">
+                    <div class="col-lg-4 col-md-8 col-12 mx-auto mb-5">
+                        <div class="card z-index-0 fadeIn3 fadeInBottom">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-gradient-primary shadow-info border-radius-lg py-3 pe-1">
+                                    <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"> Gestion des utilisateurs </h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                              <i class="material-icons opacity-10" style="font-size: 30px">people</i> 
+                              <h4 class="mb-0">
+                                <a href="{% url 'list' %}"> Accéder à l'interface de gestion </a>
+                              </h4>
+                            </div>
+                        </div>
+                    </div>
 
-    <div class="row mt-5">
-      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">group</i>
-            </div>
-            <div class="text-end pt-1">
-              <h4 class="mb-0 text-capitalize">Catéchiste</h4>
-              <h4 class="mb-0">50</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+55% </span>than last week</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">assignment_ind</i>
-            </div>
-            <div class="text-end pt-1">
-              <h4 class="mb-0 text-capitalize">Pasteur</h4>
-              <h4 class="mb-0">40</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+3% </span>than last month</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">face</i>
-            </div>
-            <div class="text-end pt-1">
-              <h4 class="mb-0 text-capitalize">Diacre</h4>
-              <h4 class="mb-0">150</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">-2%</span> than yesterday</p>
-          </div>
-        </div>
-      </div>
-    </div>
-</div>
+                    <div class="col-lg-4 col-md-8 col-12 mx-auto mb-5">
+                      <div class="card z-index-0 fadeIn3 fadeInBottom">
+                          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                              <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
+                                  <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"> Gestion de l'Eglise F.L.M </h4>
+                              </div>
+                          </div>
+                          <div class="card-body">
+                            <i class="material-icons opacity-10" style="font-size: 30px">style</i>
+                            <h4 class="mb-0">
+                              <a href="{% url 'homepage' %}"> Accéder à l'interface de gestion </a>
+                            </h4>
+                          </div>
+                      </div>
+                  </div>
 
-{% endblock content %}
+                  <div class="col-lg-4 col-md-8 col-12 mx-auto mb-5">
+                    <div class="card z-index-0 fadeIn3 fadeInBottom">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                            <div class="bg-gradient-success shadow-info border-radius-lg py-3 pe-1">
+                                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"> Gestion des localités </h4>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                          <i class="material-icons opacity-10" style="font-size: 30px">place</i>
+                          <h4 class="mb-0">
+                            <a href="{% url 'places' %}"> Accéder à l'interface de gestion </a>
+                          </h4>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+          
+            <footer class="footer position-absolute bottom-2 py-2 w-100">
+                <div class="container">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-12 col-md-3">
+                            <div class="copyright text-center text-sm text-white text-lg-start">
+                                Tout Droit Réservé © <script>
+                                document.write(new Date().getFullYear())
+                                </script>, <a href="https://haisoa.com" target="_blank"> Haisoa </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+    
+        </div>
+    </main>
+
+    <!--   Core JS Files   -->
+    <script src="{% static 'js/core/popper.min.js' %}"></script>
+    <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{% static 'js/material-dashboard.min.js' %}"></script>
+
+</body>
+
+</html>
+
+
+

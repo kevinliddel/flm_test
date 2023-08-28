@@ -26,11 +26,11 @@ BASE_DIR =Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-t4kq3#yze79c00k&gf=kk38&3z+31afz00i0#t_#(u4ebcwy_f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['Dedicatus.pythonanywhere.com']
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['eglise.grossiste.com']
 
 
 # change the default user models to our custom model
@@ -53,8 +53,6 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'import_export',
     'channels',
-#    'dal',
-#    'dal_select2'
 ]
 
 # Custom apps
@@ -107,13 +105,6 @@ ASGI_APPLICATION = "FLM.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 
 DATABASES = {
     'default': {
@@ -177,12 +168,10 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Default primary key field type
+# Default primary key field type 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -99,9 +99,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'FLM.wsgi.application'
+WSGI_APPLICATION = 'FLM.wsgi.application.app'
 
-ASGI_APPLICATION = "FLM.asgi.application" 
+ASGI_APPLICATION = 'FLM.asgi.application.app' 
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases

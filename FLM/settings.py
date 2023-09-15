@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-t4kq3#yze79c00k&gf=kk38&3z+31afz00i0#t_#(u4ebcwy_f
 # DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['*', '.vercel.app']
+ALLOWED_HOSTS = ['*', '.vercel.app', '.now.sh']
 # ALLOWED_HOSTS = ['eglise.grossiste.com']
 
 

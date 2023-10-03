@@ -9,4 +9,5 @@ environ==1.0
 pymysql==1.1.0
 pillow==9.5.0
 whitenoise==6.5.0
-
+psycopg2-binary==2.9.8
+python-dotenv==1.0.0

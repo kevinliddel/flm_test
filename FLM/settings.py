@@ -127,17 +127,10 @@ ASGI_APPLICATION = 'FLM.asgi.application.app'
 
 # Database using postgresql and psycopg2
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("DB_NAME"),
-        'USER': os.environ.get("DB_USER"),
-        'PASSWORD': os.environ.get("DB_PASSWORD"),
-        'HOST': os.environ.get("DB_HOST"),
-        'PORT': os.environ.get("DB_PORT"),
-    }
+    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1000)
 }
 
-DATABASES['default']= dj_database_url.config()
+DATABASE_URL='PGPASSWORD=8892ABlZAWahh6thmOPw psql -h containers-us-west-70.railway.app -U postgres -p 6522 -d railway
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

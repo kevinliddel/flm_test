@@ -12,16 +12,15 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
+from decouple import config
 
 # Load Dotenv for PostgrSQL DATABASE 
 from dotenv import load_dotenv
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR =Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -137,6 +136,8 @@ DATABASES = {
         'PORT': os.environ.get("DB_PORT"),
     }
 }
+
+DATABASES['default']= dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

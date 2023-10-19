@@ -127,10 +127,10 @@ ASGI_APPLICATION = 'FLM.asgi.application.app'
 
 # Database using postgresql and psycopg2
 DATABASES = {
-    'default': dj_database_url.config(default=config(DATABASE_URL))
+    'default': dj_database_url.config(default=DATABASE_URL)
 }
 
-# DATABASE_URL=postgresql://postgres:8892ABlZAWahh6thmOPw@containers-us-west-70.railway.app:6522/railway
+DATABASE_URL = "postgresql://postgres:8892ABlZAWahh6thmOPw@containers-us-west-70.railway.app:6522/railway"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
